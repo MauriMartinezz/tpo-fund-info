@@ -28,6 +28,9 @@ PDV_CAMAS = [50000, 70000, 85000, 110000]
 ventas_dia = 0
 ventas_mensuales = [0,0,0,0,0,0,0,0,0,0,0,0]
 facturacion_mensual = [0,0,0,0,0,0,0,0,0,0,0,0]
+facturacion_por_producto = [0,0,0,0,0]
+facturacion_por_modelo = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0], [0,0,0,0]]
+clientes_unicos_por_producto = [[],[],[],[],[]]
 clientes = []
 dia = 0
 mes = 0
@@ -65,8 +68,9 @@ def generar_datos():
     # Si no existe este ID, lo agrego al array de IDs de clientes
         if id_cliente not in clientes:
             clientes.append(id_cliente)
+    
 
-    # Cada iteración significa una nueva venta para ele mes
+    # Cada iteración significa una nueva venta para el mes
         ventas_mensuales[mes - 1] += 1
 
     # Selecciono un producto al azar entre
@@ -76,25 +80,54 @@ def generar_datos():
     # Dependiendo qué producto sea, selecciono un modelo de dicho producto al azar
     # Luego sumo a total_facturado_mes el precio de ese modelo
         if producto_seleccionado == 'SILLAS':
-            precio_producto = PDV_SILLAS[random.randint(1,4) - 1]
+            indice_modelo = random.randint(1,4) - 1
+            precio_producto = PDV_SILLAS[indice_modelo]
             facturacion_mensual[mes - 1] += precio_producto
 
+            # Sumar ventas a producto y modelo
+            facturacion_por_producto[0] += precio_producto
+            facturacion_por_modelo[0][indice_modelo] += precio_producto
+            # Si no existe este ID en la lista de clientes de producto se agrega al array
+            if id_cliente not in clientes_unicos_por_producto[0]:
+                clientes_unicos_por_producto[0].append(id_cliente)
         elif producto_seleccionado == 'MESAS':
-            precio_producto = PDV_MESAS[random.randint(1,4) - 1]
+            indice_modelo = random.randint(1,4) - 1
+            precio_producto = PDV_MESAS[indice_modelo]
             facturacion_mensual[mes -1] += precio_producto
-
+            facturacion_por_producto[1] += precio_producto
+            facturacion_por_modelo[1][indice_modelo] += precio_producto
+            # Si no existe este ID en la lista de clientes de producto se agrega al array
+            if id_cliente not in clientes_unicos_por_producto[1]:
+                clientes_unicos_por_producto[1].append(id_cliente)
         elif producto_seleccionado == 'SILLONES':
-            precio_producto = PDV_SILLONES[random.randint(1,4) - 1]
+            indice_modelo = random.randint(1,4) - 1
+            precio_producto = PDV_SILLONES[indice_modelo]
             facturacion_mensual[mes - 1 ] += precio_producto
+            facturacion_por_producto[2] += precio_producto
+            facturacion_por_modelo[2][indice_modelo] += precio_producto
+            # Si no existe este ID en la lista de clientes de producto se agrega al array
+            if id_cliente not in clientes_unicos_por_producto[2]:
+                clientes_unicos_por_producto[2].append(id_cliente)
 
         elif producto_seleccionado == 'RACKS_TV':
+            indice_modelo = random.randint(1,4) - 1
             precio_producto = PDV_RACKS_TV[random.randint(1,4) - 1]
             facturacion_mensual[mes - 1] += precio_producto
+            facturacion_por_producto[3] += precio_producto
+            facturacion_por_modelo[3][indice_modelo] += precio_producto
+            # Si no existe este ID en la lista de clientes de producto se agrega al array
+            if id_cliente not in clientes_unicos_por_producto[3]:
+                clientes_unicos_por_producto[3].append(id_cliente)           
 
         else:
-            precio_producto = PDV_CAMAS[random.randint(1,4) - 1]
+            indice_modelo = random.randint(1,4) - 1
+            precio_producto = PDV_CAMAS[indice_modelo]
             facturacion_mensual[mes - 1] += precio_producto
-
+            facturacion_por_producto[4] += precio_producto
+            facturacion_por_modelo[4][indice_modelo] += precio_producto
+            # Si no existe este ID en la lista de clientes de producto se agrega al array
+            if id_cliente not in clientes_unicos_por_producto[4]:
+                clientes_unicos_por_producto[4].append(id_cliente)          
         
 #Funcion que imprime el menu por pantalla
 #Se agregan las opciones necesarias segun el programa de cada uno.
@@ -127,7 +160,6 @@ def validarOpcionMenu(opcion):
 # Opción I
 #
 def totalPorMes():
-    generar_datos()
     print()
     print("Mes ", MESES[mes - 1], ' ',anio)
     print()
@@ -142,15 +174,18 @@ def totalPorMes():
 #
 def totalPorProductoYModelo(producto):
     print()
-    print("Producto elegido: ", producto)
+    print("Producto elegido: ", PRODUCTOS[producto])
     print()
 
-    print("Total facturado: ")
-    print("Ventas modelo I: ")
-    print("Ventas modelo II: ")
-    print("Ventas modelo III: ")
-    print("Ventas modelo IV: ")
-    print("Clientes únicos: ")
+    print("Total facturado: ", facturacion_por_producto[producto])
+    print()
+    # TODO: Cambiar por un for
+    print("Ventas modelo I: ", facturacion_por_modelo[producto][0])
+    print("Ventas modelo II: ", facturacion_por_modelo[producto][1])
+    print("Ventas modelo III: ", facturacion_por_modelo[producto][2])
+    print("Ventas modelo IV: ", facturacion_por_modelo[producto][3])
+    print()
+    print("Clientes únicos: ", len(clientes_unicos_por_producto[producto]))
     print("Costo adquisicion productos vendidos: ")
 
 # Opción III
@@ -196,6 +231,7 @@ def detalleDelDia(dia):
 
 print("\nBienvenido al programa\n")
 
+generar_datos()
 #Leer la primera vez la opcion del menu
 imprimirMenu()
 opcion=int(input("Ingrese la opcion elegida del menu principal: "))
@@ -214,12 +250,20 @@ while opcion != 6:
     #Analizamos las opciones validas del menú
     if opcion == 1:
         #Instrucciones para la opcion 1
-        print("")
+        print()
         print("Resumen mensual")
         totalPorMes()
     elif opcion == 2:
         print("Resumen por tipo de producto y modelo")
-        totalPorProductoYModelo()
+        print("1. Sillas")
+        print("2. Mesas")
+        print("3. Sillones")
+        print("4. Racks de TV")
+        print("5. Camas")
+        print()
+        productoAConsultar = int(input("Ingrese el código del producto que desea consultar..."))
+
+        totalPorProductoYModelo(productoAConsultar - 1)
         #ingreso de datos para opcion 2
         #proceso de datos para opcion 2
         #impresion de datos para opcion 2
@@ -244,7 +288,7 @@ while opcion != 6:
     opcion=int(input("Ingrese la opcion elegida del menu principal: "))
 
 else:
-    print("FIN DEL PROGRAMA")
+    print("GUSBAY")
     
     
 
