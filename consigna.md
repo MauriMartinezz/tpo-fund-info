@@ -82,7 +82,7 @@ PDV --> Precio de Venta
  ****** OBJETIVOS ********
 
  ## Totales mes (Opción 1)
- Mes: Agosto 2024
+ Mes: Agosto 2024 
  
   Total facturado: $xxxxx
   Total ventas realizados: xxxxx

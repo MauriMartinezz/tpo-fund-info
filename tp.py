@@ -25,7 +25,6 @@ PDV_RACKS_TV = [158000, 165000, 170000, 200000]
 PDV_CAMAS = [50000, 70000, 85000, 110000]
 
 # Variables
-
 ventas_dia = 0
 ventas_mensuales = [0,0,0,0,0,0,0,0,0,0,0,0]
 facturacion_mensual = [0,0,0,0,0,0,0,0,0,0,0,0]
@@ -34,7 +33,6 @@ dia = 0
 mes = 0
 anio = 0
 anios_con_ventas = []
-
 while (dia > 30 or dia <= 0):
     dia = int(input("Ingrese el día de la fecha... "))
 
@@ -43,7 +41,6 @@ while (mes > len(MESES) or mes <= 0):
 
 while (anio < 1990):
     anio = int(input("Ingrese el año... "))
-
 
 #Funciones
 def agregar_anio_array(anio):
@@ -57,14 +54,47 @@ def chequear_anio_array(anio):
             existe_anio_en_array = True
     return existe_anio_en_array
 
-def generar_datos():
-    ventas_dia = 0
-    while(ventas_dia < MINIMO_VENTAS_DIARIAS or ventas_dia == MAXIMO_VENTAS_DIARIAS - 1):
-        ventas_dia += 1
-        clientes.append(random.radint(1000, 9999))
-        ventas_mensuales[mes] += 1
 
-        
+def generar_datos():
+    ventas_contador = 0
+    ventas_generadas = random.randint(MINIMO_VENTAS_DIARIAS, MAXIMO_VENTAS_DIARIAS)
+    while(ventas_contador < ventas_generadas ):
+        ventas_contador += 1
+    # Creo ID de cliente, numero al azar entre 1000 y 10000
+        id_cliente = random.randint(1000, 9999)
+    # Si no existe este ID, lo agrego al array de IDs de clientes
+        if id_cliente not in clientes:
+            clientes.append(id_cliente)
+
+    # Cada iteración significa una nueva venta para ele mes
+        ventas_mensuales[mes - 1] += 1
+
+    # Selecciono un producto al azar entre
+    # SILLAS, MESAS, SILLONES, RACKS_TV & CAMAS
+        producto_seleccionado = PRODUCTOS[random.randint(1,len(PRODUCTOS)) - 1]
+
+    # Dependiendo qué producto sea, selecciono un modelo de dicho producto al azar
+    # Luego sumo a total_facturado_mes el precio de ese modelo
+        if producto_seleccionado == 'SILLAS':
+            precio_producto = PDV_SILLAS[random.randint(1,4) - 1]
+            facturacion_mensual[mes - 1] += precio_producto
+
+        elif producto_seleccionado == 'MESAS':
+            precio_producto = PDV_MESAS[random.randint(1,4) - 1]
+            facturacion_mensual[mes -1] += precio_producto
+
+        elif producto_seleccionado == 'SILLONES':
+            precio_producto = PDV_SILLONES[random.randint(1,4) - 1]
+            facturacion_mensual[mes - 1 ] += precio_producto
+
+        elif producto_seleccionado == 'RACKS_TV':
+            precio_producto = PDV_RACKS_TV[random.randint(1,4) - 1]
+            facturacion_mensual[mes - 1] += precio_producto
+
+        else:
+            precio_producto = PDV_CAMAS[random.randint(1,4) - 1]
+            facturacion_mensual[mes - 1] += precio_producto
+
         
 #Funcion que imprime el menu por pantalla
 #Se agregan las opciones necesarias segun el programa de cada uno.
@@ -97,13 +127,14 @@ def validarOpcionMenu(opcion):
 # Opción I
 #
 def totalPorMes():
+    generar_datos()
     print()
-    print("Mes Agosto 2024")
+    print("Mes ", MESES[mes - 1], ' ',anio)
     print()
 
-    print("Total facturado: ")
-    print("Total ventas realizadas: ", ventas)
-    print("Clientes unicos: ")
+    print("Total facturado en ", MESES[mes -1] , ' $', facturacion_mensual[mes - 1])
+    print("Ventas realizadas: ", ventas_mensuales[mes - 1])
+    print("Clientes unicos: ", len(clientes))
     print("Costo de adquisicion productos vendidos: ")
     print()
 
@@ -183,6 +214,7 @@ while opcion != 6:
     #Analizamos las opciones validas del menú
     if opcion == 1:
         #Instrucciones para la opcion 1
+        print("")
         print("Resumen mensual")
         totalPorMes()
     elif opcion == 2:
