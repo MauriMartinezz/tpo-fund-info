@@ -1,29 +1,71 @@
------------------------------------------------------------------------------------------
+import random
 #-----------------------------------------------------------------------------------------
 #-----------------     Plantilla para diseño de un menú ----------------------------------
 #-----------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------
-
-# Variables
-
-ventas_dia = 0
-
-ventas_mensuales = [0,0,0,0,0,0,0,0,0,0,0,0]
-facturacion_mensual = [0,0,0,0,0,0,0,0,0,0,0,0]
-
+    
 # Constantes
 MINIMO_VENTAS_DIARIAS = 20
 MAXIMO_VENTAS_DIARIAS = 200
 MESES = ['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO','AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE']
 PRODUCTOS = ['SILLAS', 'MESAS', 'SILLONES', 'RACKS TV', 'CAMAS']
+
+# Códigos de productos
+COD_CAMAS = 5
+COD_RACKS_TV = 4
+COD_SILLONES = 3
+COD_MESAS = 2
+COD_SILLAS = 1
+
+# Precios de ventas de productos
 PDV_SILLAS = [55000, 62000, 68000,70000]
 PDV_MESAS = [145000, 160000,180000,200000]
 PDV_SILLONES = [200000,300000, 400000, 450000]
 PDV_RACKS_TV = [158000, 165000, 170000, 200000]
 PDV_CAMAS = [50000, 70000, 85000, 110000]
 
+# Variables
+
+ventas_dia = 0
+ventas_mensuales = [0,0,0,0,0,0,0,0,0,0,0,0]
+facturacion_mensual = [0,0,0,0,0,0,0,0,0,0,0,0]
+clientes = []
+dia = 0
+mes = 0
+anio = 0
+anios_con_ventas = []
+
+while (dia > 30 or dia <= 0):
+    dia = int(input("Ingrese el día de la fecha... "))
+
+while (mes > len(MESES) or mes <= 0):
+    mes = int(input("Ingrese el numero del mes... "))
+
+while (anio < 1990):
+    anio = int(input("Ingrese el año... "))
+
+
 #Funciones
- 
+def agregar_anio_array(anio):
+    if chequear_anio_array(anio) == False:
+        anios_con_ventas.append(anio)
+
+def chequear_anio_array(anio):
+    existe_anio_en_array = False
+    for i in anios_con_ventas:
+        if anios_con_ventas[i] == anio:
+            existe_anio_en_array = True
+    return existe_anio_en_array
+
+def generar_datos():
+    ventas_dia = 0
+    while(ventas_dia < MINIMO_VENTAS_DIARIAS or ventas_dia == MAXIMO_VENTAS_DIARIAS - 1):
+        ventas_dia += 1
+        clientes.append(random.radint(1000, 9999))
+        ventas_mensuales[mes] += 1
+
+        
+        
 #Funcion que imprime el menu por pantalla
 #Se agregan las opciones necesarias segun el programa de cada uno.
 def imprimirMenu():
@@ -38,7 +80,7 @@ def imprimirMenu():
     print("6 - Salir")
     print("********************************************")
     print()
-    
+
     return
 
 
@@ -47,7 +89,7 @@ def imprimirMenu():
 # Agregar las opciones necesarias segun el programa de cada uno.
 
 def validarOpcionMenu(opcion):
-    if opcion > 6 or opcion < 1
+    if opcion > 6 or opcion < 1:
         return False
     else:
         return True
@@ -60,7 +102,7 @@ def totalPorMes():
     print()
 
     print("Total facturado: ")
-    print("Total ventas realizadas: ")
+    print("Total ventas realizadas: ", ventas)
     print("Clientes unicos: ")
     print("Costo de adquisicion productos vendidos: ")
     print()
@@ -121,7 +163,7 @@ def detalleDelDia(dia):
 #************************   
 
 
-print("Bienvenido al programa\n")
+print("\nBienvenido al programa\n")
 
 #Leer la primera vez la opcion del menu
 imprimirMenu()
@@ -175,3 +217,8 @@ else:
     
 
 #Fin del programa
+
+
+
+
+

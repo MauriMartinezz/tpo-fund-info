@@ -1,4 +1,4 @@
-Una empresa de venta de muebles, tiene un sitio de ventas online.
+
 
 Todos los meses, tienen que generar el resumen de la facturación de todas las ventas del mes, para ello cuentan con la siguiente información de precio de venta por unidad de los productos:
 
