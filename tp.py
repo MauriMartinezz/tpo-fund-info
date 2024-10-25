@@ -30,8 +30,8 @@ ventas_mensuales = [0,0,0,0,0,0,0,0,0,0,0,0]
 facturacion_mensual = [0,0,0,0,0,0,0,0,0,0,0,0]
 facturacion_por_producto = [0,0,0,0,0]
 facturacion_por_modelo = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0], [0,0,0,0]]
-clientes_unicos_por_producto = [[],[],[],[],[]]
-clientes = []
+clientes_unicos_unicosunicos_por_producto = [[],[],[],[],[]]
+clientes_unicos_unicos_unicos = []
 dia = 0
 mes = 0
 anio = 0
@@ -65,9 +65,9 @@ def generar_datos():
         ventas_contador += 1
     # Creo ID de cliente, numero al azar entre 1000 y 10000
         id_cliente = random.randint(1000, 9999)
-    # Si no existe este ID, lo agrego al array de IDs de clientes
-        if id_cliente not in clientes:
-            clientes.append(id_cliente)
+    # Si no existe este ID, lo agrego al array de IDs de clientes_unicos_unicos_unicos
+        if id_cliente not in clientes_unicos_unicos_unicos:
+            clientes_unicos_unicos_unicos.append(id_cliente)
     
 
     # Cada iteración significa una nueva venta para el mes
@@ -87,27 +87,27 @@ def generar_datos():
             # Sumar ventas a producto y modelo
             facturacion_por_producto[0] += precio_producto
             facturacion_por_modelo[0][indice_modelo] += precio_producto
-            # Si no existe este ID en la lista de clientes de producto se agrega al array
-            if id_cliente not in clientes_unicos_por_producto[0]:
-                clientes_unicos_por_producto[0].append(id_cliente)
+            # Si no existe este ID en la lista de clientes_unicos_unicos_unicos de producto se agrega al array
+            if id_cliente not in clientes_unicos_unicosunicos_por_producto[0]:
+                clientes_unicos_unicosunicos_por_producto[0].append(id_cliente)
         elif producto_seleccionado == 'MESAS':
             indice_modelo = random.randint(1,4) - 1
             precio_producto = PDV_MESAS[indice_modelo]
             facturacion_mensual[mes -1] += precio_producto
             facturacion_por_producto[1] += precio_producto
             facturacion_por_modelo[1][indice_modelo] += precio_producto
-            # Si no existe este ID en la lista de clientes de producto se agrega al array
-            if id_cliente not in clientes_unicos_por_producto[1]:
-                clientes_unicos_por_producto[1].append(id_cliente)
+            # Si no existe este ID en la lista de clientes_unicos_unicos_unicos de producto se agrega al array
+            if id_cliente not in clientes_unicos_unicosunicos_por_producto[1]:
+                clientes_unicos_unicosunicos_por_producto[1].append(id_cliente)
         elif producto_seleccionado == 'SILLONES':
             indice_modelo = random.randint(1,4) - 1
             precio_producto = PDV_SILLONES[indice_modelo]
             facturacion_mensual[mes - 1 ] += precio_producto
             facturacion_por_producto[2] += precio_producto
             facturacion_por_modelo[2][indice_modelo] += precio_producto
-            # Si no existe este ID en la lista de clientes de producto se agrega al array
-            if id_cliente not in clientes_unicos_por_producto[2]:
-                clientes_unicos_por_producto[2].append(id_cliente)
+            # Si no existe este ID en la lista de clientes_unicos_unicos_unicos de producto se agrega al array
+            if id_cliente not in clientes_unicos_unicosunicos_por_producto[2]:
+                clientes_unicos_unicosunicos_por_producto[2].append(id_cliente)
 
         elif producto_seleccionado == 'RACKS_TV':
             indice_modelo = random.randint(1,4) - 1
@@ -115,9 +115,9 @@ def generar_datos():
             facturacion_mensual[mes - 1] += precio_producto
             facturacion_por_producto[3] += precio_producto
             facturacion_por_modelo[3][indice_modelo] += precio_producto
-            # Si no existe este ID en la lista de clientes de producto se agrega al array
-            if id_cliente not in clientes_unicos_por_producto[3]:
-                clientes_unicos_por_producto[3].append(id_cliente)           
+            # Si no existe este ID en la lista de clientes_unicos_unicos_unicos de producto se agrega al array
+            if id_cliente not in clientes_unicos_unicosunicos_por_producto[3]:
+                clientes_unicos_unicosunicos_por_producto[3].append(id_cliente)           
 
         else:
             indice_modelo = random.randint(1,4) - 1
@@ -125,9 +125,9 @@ def generar_datos():
             facturacion_mensual[mes - 1] += precio_producto
             facturacion_por_producto[4] += precio_producto
             facturacion_por_modelo[4][indice_modelo] += precio_producto
-            # Si no existe este ID en la lista de clientes de producto se agrega al array
-            if id_cliente not in clientes_unicos_por_producto[4]:
-                clientes_unicos_por_producto[4].append(id_cliente)          
+            # Si no existe este ID en la lista de clientes_unicos_unicos_unicos de producto se agrega al array
+            if id_cliente not in clientes_unicos_unicosunicos_por_producto[4]:
+                clientes_unicos_unicosunicos_por_producto[4].append(id_cliente)          
         
 #Funcion que imprime el menu por pantalla
 #Se agregan las opciones necesarias segun el programa de cada uno.
@@ -166,7 +166,7 @@ def totalPorMes():
 
     print("Total facturado en ", MESES[mes -1] , ' $', facturacion_mensual[mes - 1])
     print("Ventas realizadas: ", ventas_mensuales[mes - 1])
-    print("Clientes unicos: ", len(clientes))
+    print("Clientes unicos: ", len(clientes_unicos_unicos_unicos))
     print("Costo de adquisicion productos vendidos: ")
     print()
 
@@ -185,7 +185,7 @@ def totalPorProductoYModelo(producto):
     print("Ventas modelo III: ", facturacion_por_modelo[producto][2])
     print("Ventas modelo IV: ", facturacion_por_modelo[producto][3])
     print()
-    print("Clientes únicos: ", len(clientes_unicos_por_producto[producto]))
+    print("Clientes únicos: ", len(clientes_unicos_unicosunicos_por_producto[producto]))
     print("Costo adquisicion productos vendidos: ")
 
 # Opción III
