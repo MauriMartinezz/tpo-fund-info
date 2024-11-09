@@ -1,5 +1,3 @@
-
-
 Todos los meses, tienen que generar el resumen de la facturación de todas las ventas del mes, para ello cuentan con la siguiente información de precio de venta por unidad de los productos:
 
 
@@ -102,7 +100,8 @@ PDV --> Precio de Venta
   Total costo adquisición productos vendidos: $xxxxx
 
  ## Detalle por clientes (Opción 3)
- Mes: Agosto 2024
+ Mes: Agosto 2024:
+
 
    ID Cliente
        1000
@@ -120,7 +119,7 @@ PDV --> Precio de Venta
  
 
  ## Detalle por día Opción 4
-
+ 
  Mes: Agosto 2024
 
    Día
