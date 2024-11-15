@@ -105,7 +105,7 @@ PDV --> Precio de Venta
 
    ID Cliente
        1000
-   Total artículos comprados
+   Total artículos comprados 
        3
    Total facturado por cliente
        150.000

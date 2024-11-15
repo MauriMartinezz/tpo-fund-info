@@ -26,6 +26,10 @@ PDV_CAMAS = [50000, 70000, 85000, 110000]
 facturacion_dia = [0]*30
 ventas_dia = [0]*30
 
+ventas_producto_detalle_dia = []
+ventas_modelo_detalle_dia = []
+facturacion_por_venta_detalle_dia = []
+
 facturacion_por_producto = [0, 0, 0, 0, 0]
 facturacion_por_modelo = [[0, 0, 0, 0], [0, 0, 0, 0],
                           [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
@@ -71,6 +75,7 @@ def generar_datos(dia):
         if id_cliente not in clientes:
             clientes.append(id_cliente)
             ventas_cliente.append(1)
+            facturacion_por_cliente.append(0)
         else:
             ventas_cliente[get_usuario_index(id_cliente)] += 1
 
@@ -86,11 +91,20 @@ def generar_datos(dia):
     # Dependiendo qué producto sea, selecciono un modelo de dicho
     # producto al azar
     # Luego sumo a facturacion_dia el precio de ese modelo
+        indice_modelo = random.randint(1, 4) - 1
+
+        ventas_producto_detalle_dia.append(producto_seleccionado)
+        ventas_modelo_detalle_dia.append(indice_modelo)
+
         match producto_seleccionado:
             case 'SILLAS':
-                indice_modelo = random.randint(1, 4) - 1
                 precio_producto = PDV_SILLAS[indice_modelo]
                 facturacion_dia[dia - 1] += precio_producto
+
+                facturacion_por_cliente[get_usuario_index(
+                    id_cliente)] += precio_producto
+
+                facturacion_por_venta_detalle_dia.append(precio_producto)
 
                 # Sumar ventas a producto y modelo
                 # SILLAS esta en la posicion 0, lo que varia es el modelo
@@ -103,43 +117,49 @@ def generar_datos(dia):
                     clientes_unicos_por_producto[0].append(id_cliente)
 
             case 'MESAS':
-                indice_modelo = random.randint(1, 4) - 1
                 precio_producto = PDV_MESAS[indice_modelo]
                 facturacion_dia[dia - 1] = precio_producto
 
+                facturacion_por_cliente[get_usuario_index(
+                    id_cliente)] += precio_producto
                 # Sumar ventas a producto y modelo
                 # MESAS esta en la posicion 2, lo que varia es el modelo
                 facturacion_por_producto[1] += precio_producto
                 facturacion_por_modelo[1][indice_modelo] += precio_producto
 
+                facturacion_por_venta_detalle_dia.append(precio_producto)
                 # Si no existe este ID en la lista de
                 # clientes_unicos_unicos_unicos de producto se agrega al array
                 if id_cliente not in clientes_unicos_por_producto[1]:
                     clientes_unicos_por_producto[1].append(id_cliente)
             case 'SILLONES':
-                indice_modelo = random.randint(1, 4) - 1
                 precio_producto = PDV_SILLONES[indice_modelo]
                 facturacion_dia[dia - 1] += precio_producto
 
+                facturacion_por_cliente[get_usuario_index(
+                    id_cliente)] += precio_producto
                 # Sumar ventas a producto y modelo
                 # SILLONES esta en la posicion 2, lo que varia es el modelo
                 facturacion_por_producto[2] += precio_producto
                 facturacion_por_modelo[2][indice_modelo] += precio_producto
 
+                facturacion_por_venta_detalle_dia.append(precio_producto)
                 # Si no existe este ID en la lista de
                 # clientes_unicos_unicos_unicos de producto se agrega al array
                 if id_cliente not in clientes_unicos_por_producto[2]:
                     clientes_unicos_por_producto[2].append(id_cliente)
             case 'RACKS TV':
-                indice_modelo = random.randint(1, 4) - 1
                 precio_producto = PDV_RACKS_TV[indice_modelo]
                 facturacion_dia[dia - 1] += precio_producto
 
+                facturacion_por_cliente[get_usuario_index(
+                    id_cliente)] += precio_producto
                 # Sumar ventas a producto y modelo
                 # RACKS_TV esta en la posicion 2, lo que varia es el modelo
                 facturacion_por_producto[3] += precio_producto
                 facturacion_por_modelo[3][indice_modelo] += precio_producto
 
+                facturacion_por_venta_detalle_dia.append(precio_producto)
                 # Si no existe este ID en la lista de
                 # clientes_unicos_unicos_unicos de producto se agrega al array
                 if id_cliente not in clientes_unicos_por_producto[3]:
@@ -149,11 +169,14 @@ def generar_datos(dia):
                 precio_producto = PDV_CAMAS[indice_modelo]
                 facturacion_dia[dia - 1] += precio_producto
 
+                facturacion_por_cliente[get_usuario_index(
+                    id_cliente)] += precio_producto
                 # Sumar ventas a producto y modelo
                 # RACKS_TV esta en la posicion 2, lo que varia es el modelo
                 facturacion_por_producto[4] += precio_producto
                 facturacion_por_modelo[4][indice_modelo] += precio_producto
 
+                facturacion_por_venta_detalle_dia.append(precio_producto)
                 # Si no existe este ID en la lista de
                 # clientes_unicos_unicos_unicos de producto se agrega al array
                 if id_cliente not in clientes_unicos_por_producto[4]:
@@ -239,7 +262,7 @@ def total_por_producto_y_modelo(producto):
     print("Producto elegido: ", PRODUCTOS[producto])
     print()
 
-    print("Total facturado: ", facturacion_por_producto[producto])
+    print("Total facturado: $", facturacion_por_producto[producto])
     print()
     for i in range(len(facturacion_por_modelo[producto])):
         print("Ventas modelo ", i + 1, facturacion_por_modelo[producto][i])
@@ -256,10 +279,13 @@ def get_ventas_mensuales_por_cliente():
     print("Mes ", mes, " del ", anio)
     print()
     for i in range(len(clientes)):
-        print("ID Cliente: ", clientes[i])
+        print()
+        print("--------------------------")
+        print("Cliente ", clientes[i])
         print("Artículos comprados: ", ventas_cliente[i])
-        print("Total facturado cliente: ")
-
+        print("Total facturado cliente: $", facturacion_por_cliente[i])
+        print("--------------------------")
+        print()
 
 # Opción IV
 
@@ -270,7 +296,7 @@ def detalle_por_dia():
         print(i + 1, "/", mes, "/", anio)
         print("-----------------------------------")
         print("Ventas realizadas: ", ventas_dia[i])
-        print("Total facturado del dia: ", facturacion_dia[i])
+        print("Total facturado del dia: $", facturacion_dia[i])
         print("-----------------------------------")
         print()
     print()
@@ -278,15 +304,23 @@ def detalle_por_dia():
 # Opción V
 
 
-def detalle_del_dia(dia):
+def detalle_del_dia():
+    dia_elegido = 0
+    while (dia_elegido > 30 or dia_elegido < 1):
+        dia_elegido = int(input("Indique el dia que desea consultar: "))
+
     print()
-    print("Día: ", dia)
+    print("Día: ", dia_elegido, " de ", MESES[mes - 1], ' del ', anio)
     print()
 
-    print("ID cliente: ")
-    print("Tipo de producto: ")
-    print("Modelo: ")
-    print("Total facturado: ")
+    for i in range(len(ventas_dia)):
+        print("---------------------------")
+        print("ID cliente: ", )
+        print("Tipo de producto: ", ventas_producto_detalle_dia[i])
+        print("Modelo: ", ventas_modelo_detalle_dia[i])
+        print("Total facturado: ", facturacion_por_venta_detalle_dia[i])
+        print("---------------------------")
+        print()
 
 
 # ***********************
