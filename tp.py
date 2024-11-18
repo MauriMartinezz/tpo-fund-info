@@ -33,10 +33,10 @@ facturacion = [[0, 0, 0, 0], [0, 0, 0, 0], [
 ventas_por_producto = [[0, 0, 0, 0], [0, 0, 0, 0],
                        [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
 
-clientes_del_dia = [[0]]*30
-ventas_producto_dia = [[0]]*30
-ventas_modelo_detalle_dia = [[0]]*30
-facturacion_por_venta_dia = [[0]]*30
+clientes_del_dia = [[] for _ in range(30)]
+ventas_producto_dia = [[] for _ in range(30)]
+ventas_modelo_detalle_dia = [[] for _ in range(30)]
+facturacion_por_venta_dia = [[] for _ in range(30)]
 
 
 clientes_totales = []
@@ -106,7 +106,7 @@ def crear_datos(dia):
     ventas_del_dia = random.randint(
         MINIMO_VENTAS_DIARIAS, MAXIMO_VENTAS_DIARIAS)
 
-    ventas_dia[dia - 1] = ventas_del_dia
+    ventas_dia[dia] = ventas_del_dia
 
     while (ventas_contador < ventas_del_dia):
         ventas_contador += 1
@@ -119,7 +119,7 @@ def crear_datos(dia):
         valor_venta = generar_venta(
             producto_vendido, modelo_vendido, id_cliente, dia)
 
-        facturacion_dia[dia - 1] += valor_venta
+        facturacion_dia[dia] += valor_venta
 
 
 def generar_datos_mensual():
@@ -184,6 +184,31 @@ def sumar_elementos_array(array):
         total += array[i]
 
     return total
+
+def ordenar_ids_descendente(dia_elegido):
+    desordenada = True
+    while desordenada:
+        desordenada = False
+
+        for i in range(len(clientes_del_dia[dia_elegido ]) - 1):
+            if clientes_del_dia[dia_elegido ][i] > clientes_del_dia[dia_elegido ] [i+1]:
+                aux = clientes_del_dia[dia_elegido ][i]
+                auxVentasProducto = ventas_producto_dia[dia_elegido ][i]
+                auxVentasModelo = ventas_modelo_detalle_dia[dia_elegido ][i]
+                auxFacturacion = facturacion_por_venta_dia[dia_elegido ][i]
+
+                clientes_del_dia[dia_elegido ][i] = clientes_del_dia[dia_elegido ][i+1]
+                clientes_del_dia[dia_elegido ][i+1] = aux
+
+                ventas_producto_dia[dia_elegido ][i] = ventas_producto_dia[dia_elegido ][i + 1]
+                ventas_modelo_detalle_dia[dia_elegido ][i] = ventas_modelo_detalle_dia[dia_elegido ][i + 1]
+                facturacion_por_venta_dia[dia_elegido ][i] = facturacion_por_venta_dia[dia_elegido ][i + 1]
+
+                ventas_producto_dia[dia_elegido ][i + 1] = auxVentasProducto
+                ventas_modelo_detalle_dia[dia_elegido ][i + 1] = auxVentasModelo
+                facturacion_por_venta_dia[dia_elegido ][i + 1] = auxFacturacion
+
+                desordenada = True
 
 # Opción I
 
@@ -257,6 +282,9 @@ def detalle_del_dia():
     while (dia_elegido > 30 or dia_elegido < 1):
         dia_elegido = int(input("Indique el dia que desea consultar: "))
 
+
+    ordenar_ids_descendente(dia_elegido - 1)
+
     print()
     print("Día: ", dia_elegido, " de ", MESES[mes - 1], ' del ', anio)
     print()
@@ -271,9 +299,7 @@ def detalle_del_dia():
               facturacion_por_venta_dia[dia_elegido - 1][i])
         print("---------------------------")
         print()
-
-    print("Cantidad de ventas ",
-          ventas_modelo_detalle_dia[dia_elegido - 1])
+    print("Ventas del dia ", len(clientes_del_dia[dia_elegido - 1]))
 
 # ***********************
 # Programa principal
